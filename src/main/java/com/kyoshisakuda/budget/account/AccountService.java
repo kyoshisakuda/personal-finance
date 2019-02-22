@@ -28,7 +28,12 @@ public class AccountService {
     }
 
     public void updateAccount(long id, Account account) {
-        accounts.set((int) id - 1, account);
+        for (int i=0; i<accounts.size(); i++) {
+            if (accounts.get(i).getId() == id) {
+                accounts.set(i, account);
+                return;
+            }
+        }
     }
 
     public void deleteAccount(long id) {
