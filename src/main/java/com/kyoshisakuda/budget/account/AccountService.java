@@ -1,42 +1,36 @@
 package com.kyoshisakuda.budget.account;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class AccountService {
 
-    private List<Account> accounts = new ArrayList<Account>(Arrays.asList(
-            new Account(1, "Caja chica", "Efectivo"),
-            new Account(2, "Ahorros BCP", "Cuenta de Ahorros BCP"),
-            new Account(3, "Credito BCP", "Tarjeta de crédito BCP")
-    ));
+    @Autowired
+    private AccountRepository repository;
 
     public List<Account> getAllAccounts() {
+        List<Account> accounts = new ArrayList<>();
+        repository.findAll().forEach(accounts::add);
         return accounts;
     }
 
     public Account getAccount(int id) {
-        return accounts.stream().filter(acc -> acc.getId() == id).findFirst().get();
+        return repository.findById(id).get();
     }
 
     public void addAccount(Account account) {
-        accounts.add(account);
+        repository.save(account);
     }
 
     public void updateAccount(int id, Account account) {
-        for (int i=0; i<accounts.size(); i++) {
-            if (accounts.get(i).getId() == id) {
-                accounts.set(i, account);
-                return;
-            }
-        }
+        repository.save(account);
     }
 
     public void deleteAccount(int id) {
-        accounts.removeIf(acc -> acc.getId() == id);
+        repository.deleteById(id);
     }
 }
