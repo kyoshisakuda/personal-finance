@@ -19,7 +19,7 @@ public class AccountService {
         return accounts;
     }
 
-    public Account getAccount(long id) {
+    public Account getAccount(int id) {
         return accounts.stream().filter(acc -> acc.getId() == id).findFirst().get();
     }
 
@@ -27,7 +27,7 @@ public class AccountService {
         accounts.add(account);
     }
 
-    public void updateAccount(long id, Account account) {
+    public void updateAccount(int id, Account account) {
         for (int i=0; i<accounts.size(); i++) {
             if (accounts.get(i).getId() == id) {
                 accounts.set(i, account);
@@ -36,7 +36,7 @@ public class AccountService {
         }
     }
 
-    public void deleteAccount(long id) {
+    public void deleteAccount(int id) {
         accounts.removeIf(acc -> acc.getId() == id);
     }
 }

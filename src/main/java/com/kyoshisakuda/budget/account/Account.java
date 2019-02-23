@@ -1,14 +1,19 @@
 package com.kyoshisakuda.budget.account;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Account {
 
-    private long id;
+    @Id
+    private Integer id;
     private String name;
     private String description;
 
     public Account() {}
 
-    public Account(long id, String name, String description) {
+    public Account(Integer id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -18,7 +23,7 @@ public class Account {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -17,7 +17,7 @@ public class AccountController {
     }
 
     @RequestMapping("/accounts/{id}")
-    public Account getAccount(@PathVariable long id) {
+    public Account getAccount(@PathVariable int id) {
         return accountService.getAccount(id);
     }
 
@@ -27,12 +27,12 @@ public class AccountController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/accounts/{id}")
-    public void updateAccount(@RequestBody Account account, @PathVariable long id) {
+    public void updateAccount(@RequestBody Account account, @PathVariable int id) {
         accountService.updateAccount(id, account);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/accounts/{id}")
-    public void deleteAccount(@PathVariable long id) {
+    public void deleteAccount(@PathVariable int id) {
         accountService.deleteAccount(id);
     }
 
