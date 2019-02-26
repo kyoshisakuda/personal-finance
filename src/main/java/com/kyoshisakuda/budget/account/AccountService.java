@@ -27,7 +27,8 @@ public class AccountService {
     }
 
     public void updateAccount(int id, Account account) {
-        repository.save(account);
+        if (repository.findById(id).isPresent())
+            repository.save(account);
     }
 
     public void deleteAccount(int id) {
