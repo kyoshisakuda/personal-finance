@@ -1,24 +1,32 @@
 package com.kyoshisakuda.budget.account;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.kyoshisakuda.budget.Currency;
+
+import javax.persistence.*;
 
 @Entity
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     private String name;
     private String description;
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
+    private double balance;
 
     public Account() {}
 
-    public Account(String name, String description) {
+    public Account(String name, String description, Currency currency) {
+        this(name, description, currency, 0.0d);
+    }
+
+    public Account(String name, String description, Currency currency, double balance) {
         this.name = name;
         this.description = description;
+        this.currency = currency;
+        this.balance = balance;
     }
 
     private Account(int id) {
@@ -54,5 +62,21 @@ public class Account {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 }
