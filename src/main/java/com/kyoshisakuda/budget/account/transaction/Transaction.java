@@ -1,5 +1,6 @@
 package com.kyoshisakuda.budget.account.transaction;
 
+import com.kyoshisakuda.budget.Currency;
 import com.kyoshisakuda.budget.account.Account;
 
 import javax.persistence.*;
@@ -8,27 +9,27 @@ import javax.persistence.*;
 public class Transaction {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String description;
     private double amount;
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
+
     @ManyToOne
     private Account account;
 
     public Transaction() {}
 
-    public Transaction(Long id, String description, double amount, int accountId) {
-        this.id = id;
+    public Transaction(String description, double amount, Currency currency, int accountId) {
         this.description = description;
         this.amount = amount;
+        this.currency = currency;
         this.account = Account.createEmptyAccountWithId(accountId);
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getDescription() {
@@ -53,5 +54,13 @@ public class Transaction {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 }
