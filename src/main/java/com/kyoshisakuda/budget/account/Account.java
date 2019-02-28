@@ -53,7 +53,7 @@ public class Account {
         return new Account(id);
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
