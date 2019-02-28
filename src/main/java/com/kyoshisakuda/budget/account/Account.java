@@ -23,6 +23,11 @@ public class Account {
     }
 
     public Account(String name, String description, Currency currency, double balance) {
+        this(0, name, description, currency, balance);
+    }
+
+    public Account(int id, String name, String description, Currency currency, double balance) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.currency = currency;
