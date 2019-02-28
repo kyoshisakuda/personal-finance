@@ -9,6 +9,16 @@ import java.util.stream.Stream;
 
 public class AccountTestSample {
 
+    private static List<Account> accounts = Stream.of(
+            new Account("AFP", "AFP Habitat", Currency.PEN),
+            new Account("Debito Soles", "BCP Cuenta Ahorros Soles", Currency.PEN),
+            new Account("Debito Dolares", "BCP Cuenta Ahorros Dolares", Currency.USD),
+            new Account("CTS", "CTS BCP", Currency.PEN),
+            new Account("Tarjeta de credito", "TC BCP", Currency.PEN))
+            .collect(Collectors.toList());
+
+    private static Account account_AFP = new Account(1,"AFP", "AFP Habitaat", Currency.PEN);
+
     public static List<Account> getListOfSampleAccounts(boolean isEmpty) {
         if (isEmpty)
             return new ArrayList<>();
@@ -17,17 +27,11 @@ public class AccountTestSample {
     }
 
     public static List<Account> getListOfSampleAccounts() {
-        return Stream.of(
-                new Account("AFP", "AFP Habitat", Currency.PEN),
-                new Account("Debito Soles", "BCP Cuenta Ahorros Soles", Currency.PEN),
-                new Account("Debito Dolares", "BCP Cuenta Ahorros Dolares", Currency.USD),
-                new Account("CTS", "CTS BCP", Currency.PEN),
-                new Account("Tarjeta de credito", "TC BCP", Currency.PEN))
-                .collect(Collectors.toList());
+        return accounts;
     }
 
     public static Account getSampleAccount() {
-        return new Account(1,"AFP", "AFP Habitaat", Currency.PEN);
+        return account_AFP;
     }
 
 }
