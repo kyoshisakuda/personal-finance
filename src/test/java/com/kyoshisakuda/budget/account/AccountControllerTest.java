@@ -1,5 +1,7 @@
 package com.kyoshisakuda.budget.account;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.kyoshisakuda.budget.Currency;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,5 +71,14 @@ public class AccountControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(URI_GET_1)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void addAccount_return201() throws Exception {
+        Mockito.when(service.addAccount(getSampleAccount())).thenReturn(true);
+        mockMvc.perform(MockMvcRequestBuilders.post(URI_BASE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getAccountAsJSONString()))
+                .andExpect(status().isCreated());
     }
 }

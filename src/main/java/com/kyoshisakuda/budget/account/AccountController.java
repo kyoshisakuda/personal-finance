@@ -26,6 +26,7 @@ public class AccountController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void addAccount(@RequestBody Account account) {
         service.addAccount(account);
     }
