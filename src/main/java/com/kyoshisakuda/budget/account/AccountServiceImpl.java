@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -21,22 +22,24 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account getAccount(int id) {
-        return repository.findById(id).get();
+        return repository.findById(id).orElse(null);
     }
 
     @Override
-    public void addAccount(Account account) {
-        repository.save(account);
+    public boolean addAccount(Account account) {
+        return Optional.ofNullable(repository.save(account)).isPresent();
     }
 
     @Override
-    public void updateAccount(int id, Account account) {
-        if (repository.findById(id).isPresent())
-            repository.save(account);
+    public boolean updateAccount(int id, Account account) {
+        if (!repository.findById(id).isPresent())
+            return false;
+        return Optional.ofNullable(repository.save(account)).isPresent();
     }
 
     @Override
-    public void deleteAccount(int id) {
+    public boolean deleteAccount(int id) {
         repository.deleteById(id);
+        return !repository.findById(id).isPresent();
     }
 }
