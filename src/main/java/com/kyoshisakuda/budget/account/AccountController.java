@@ -1,9 +1,12 @@
 package com.kyoshisakuda.budget.account;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/accounts")
@@ -19,7 +22,7 @@ public class AccountController {
 
     @GetMapping("/{id}")
     public Account getAccount(@PathVariable int id) {
-        return service.getAccount(id);
+        return Optional.ofNullable(service.getAccount(id)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
