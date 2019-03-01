@@ -17,7 +17,7 @@ public class AccountTestSample {
             new Account("Tarjeta de credito", "TC BCP", Currency.PEN))
             .collect(Collectors.toList());
 
-    private static Account account_AFP = new Account(1,"AFP", "AFP Habitaat", Currency.PEN);
+    private static Account account_AFP = new Account(1,"AFP", "AFP Habitat", Currency.PEN);
 
     public static List<Account> getListOfSampleAccounts(boolean isEmpty) {
         if (isEmpty)
