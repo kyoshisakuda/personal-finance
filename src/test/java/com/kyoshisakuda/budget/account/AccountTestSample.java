@@ -1,5 +1,7 @@
 package com.kyoshisakuda.budget.account;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.kyoshisakuda.budget.Currency;
 
 import java.util.ArrayList;
@@ -32,6 +34,13 @@ public class AccountTestSample {
 
     public static Account getSampleAccount() {
         return account_AFP;
+    }
+
+    public static String getAccountAsJSONString() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter writter = mapper.writer().withDefaultPrettyPrinter();
+        System.out.println(writter.writeValueAsString(account_AFP));
+        return writter.writeValueAsString(account_AFP);
     }
 
 }
