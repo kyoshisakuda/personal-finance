@@ -1,6 +1,9 @@
 package com.kyoshisakuda.budget.account;
 
+import org.hamcrest.CoreMatchers;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -88,11 +93,18 @@ public class AccountServiceImplTest {
         assertFalse(service.updateAccount(getSampleAccount().getId(), getSampleAccount()));
     }
 
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    //@Test(expected = ResponseStatusException.class)
     @Test
     public void updateAccount_whenIdNotExist_returnFalse() {
+        exceptionRule.expect(ResponseStatusException.class);
+        exceptionRule.expectMessage(CoreMatchers.is("404 NOT_FOUND"));
+
         Mockito.when(repository.findById(getSampleAccount().getId())).thenReturn(Optional.empty());
         Mockito.when(repository.save(getSampleAccount())).thenReturn(getSampleAccount());
-        assertFalse(service.updateAccount(getSampleAccount().getId(), getSampleAccount()));
+        service.updateAccount(getSampleAccount().getId(), getSampleAccount());
     }
 
     @Test

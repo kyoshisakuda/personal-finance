@@ -28,17 +28,31 @@ public class AccountController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void addAccount(@RequestBody Account account) {
-        service.addAccount(account);
+        if (!service.addAccount(account))
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAccount(@RequestBody Account account, @PathVariable int id) {
-        service.updateAccount(id, account);
+        try {
+            if (!service.updateAccount(id, account))
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (ResponseStatusException ex) {
+            if (ex.getStatus().equals(HttpStatus.NOT_FOUND))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            else if (ex.getStatus().equals(HttpStatus.INTERNAL_SERVER_ERROR))
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            else
+                throw ex;
+        }
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAccount(@PathVariable int id) {
-        service.deleteAccount(id);
+        if (!service.deleteAccount(id))
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
