@@ -23,7 +23,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     public Transaction getTransaction(long id) {
-        return repository.findById(id).get();
+        return repository.findById(id).orElse(null);
     }
 
     public boolean addTransaction(Transaction transaction) {
