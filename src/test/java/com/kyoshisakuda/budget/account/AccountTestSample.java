@@ -38,8 +38,8 @@ public class AccountTestSample {
 
     public static String getAccountAsJSONString() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        ObjectWriter writter = mapper.writer().withDefaultPrettyPrinter();
-        return writter.writeValueAsString(account_AFP);
+        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+        return writer.writeValueAsString(account_AFP);
     }
 
 }

@@ -50,13 +50,6 @@ public class TransactionControllerTest {
     }
 
     @Test
-    public void getTransactions_whenAccountNotExist_return404() throws Exception {
-        when(service.getTransactions(anyInt())).thenReturn(null);
-        mockMvc.perform(get(URI_TRANSACTIONS))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
     public void getTransaction_returnTransaction() throws Exception {
         when(service.getTransaction(anyLong())).thenReturn(getSampleTransaction());
         mockMvc.perform(get(URI_TRANSACTION))
@@ -81,60 +74,67 @@ public class TransactionControllerTest {
 
     @Test
     public void addTransaction_return201() throws Exception {
-        when(service.addTransaction(getSampleTransaction())).thenReturn(true);
-        mockMvc.perform(put(URI_TRANSACTIONS))
+        when(service.addTransaction(Mockito.any(Transaction.class))).thenReturn(true);
+        mockMvc.perform(post(URI_TRANSACTIONS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getSampleTransactionAsJSONString()))
                 .andExpect(status().isCreated());
     }
 
     @Test
     public void addTransaction_whenErrorSaving_return500() throws Exception {
-        when(service.addTransaction(getSampleTransaction())).thenReturn(false);
-        mockMvc.perform(put(URI_TRANSACTIONS))
+        when(service.addTransaction(Mockito.any(Transaction.class))).thenReturn(false);
+        mockMvc.perform(post(URI_TRANSACTIONS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getSampleTransactionAsJSONString()))
                 .andExpect(status().isInternalServerError());
     }
 
     @Test
     public void updateTransaction_return204() throws Exception {
         when(service.updateTransaction(anyLong(), Mockito.any(Transaction.class))).thenReturn(true);
-        mockMvc.perform(put(URI_TRANSACTION))
+        mockMvc.perform(put(URI_TRANSACTION)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getSampleTransactionAsJSONString()))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     public void updateTransaction_whenErrorSaving_return500() throws Exception {
         when(service.updateTransaction(anyLong(), Mockito.any(Transaction.class))).thenReturn(false);
-        mockMvc.perform(put(URI_TRANSACTION))
+        mockMvc.perform(put(URI_TRANSACTION)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getSampleTransactionAsJSONString()))
                 .andExpect(status().isInternalServerError());
     }
 
     @Test
     public void updateTransaction_whenNotExist_return404() throws Exception {
         when(service.updateTransaction(anyLong(), Mockito.any(Transaction.class))).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
-        mockMvc.perform(put(URI_TRANSACTION))
+        mockMvc.perform(put(URI_TRANSACTION)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getSampleTransactionAsJSONString()))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void deleteTransaction_return204() throws Exception {
-        when(service.deleteTransaction(anyInt())).thenReturn(true);
-        mockMvc.perform(delete(URI_TRANSACTION)
-                .contentType(MediaType.APPLICATION_JSON))
+        when(service.deleteTransaction(anyLong())).thenReturn(true);
+        mockMvc.perform(delete(URI_TRANSACTION))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     public void deleteTransaction_whenErrorDeleting_return500() throws Exception {
         when(service.deleteTransaction(anyLong())).thenReturn(false);
-        mockMvc.perform(delete(URI_TRANSACTION)
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete(URI_TRANSACTION))
                 .andExpect(status().isInternalServerError());
     }
 
     @Test
     public void deleteTransaction_whenNotExist_return204() throws Exception {
         when(service.deleteTransaction(anyLong())).thenReturn(true);
-        mockMvc.perform(delete(URI_TRANSACTION)
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete(URI_TRANSACTION))
                 .andExpect(status().isNoContent());
     }
 }

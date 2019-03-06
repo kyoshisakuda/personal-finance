@@ -2,9 +2,12 @@ package com.kyoshisakuda.budget.account.transaction;
 
 import com.kyoshisakuda.budget.account.Account;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class TransactionController {
@@ -12,31 +15,37 @@ public class TransactionController {
     @Autowired
     private TransactionService service;
 
-    @RequestMapping("/accounts/{id}/transactions")
+    @GetMapping("/accounts/{id}/transactions")
     public List<Transaction> getTransactions(@PathVariable int id) {
         return service.getTransactions(id);
     }
 
-    @RequestMapping("/accounts/{accountId}/transactions/{id}")
+    @GetMapping("/accounts/{accountId}/transactions/{id}")
     public Transaction getTransaction(@PathVariable long id) {
-        return service.getTransaction(id);
+        return Optional.ofNullable(service.getTransaction(id)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/accounts/{accountId}/transactions")
+    @PostMapping("/accounts/{accountId}/transactions")
+    @ResponseStatus(HttpStatus.CREATED)
     public void addTransaction(@RequestBody Transaction transaction, @PathVariable int accountId) {
         transaction.setAccount(Account.createEmptyAccountWithId(accountId));
-        service.addTransaction(transaction);
+        if (!service.addTransaction(transaction))
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/accounts/{accountId}/transactions/{id}")
+    @PutMapping("/accounts/{accountId}/transactions/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateTransaction(@PathVariable int accountId, @PathVariable long id, @RequestBody Transaction transaction) {
         transaction.setAccount(Account.createEmptyAccountWithId(accountId));
-        service.updateTransaction(id, transaction);
+        if (!service.updateTransaction(id, transaction))
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/accounts/{accountId}/transactions/{id}")
+    @DeleteMapping("/accounts/{accountId}/transactions/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTransaction(@PathVariable long id) {
-        service.deleteTransaction(id);
+        if (!service.deleteTransaction(id))
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

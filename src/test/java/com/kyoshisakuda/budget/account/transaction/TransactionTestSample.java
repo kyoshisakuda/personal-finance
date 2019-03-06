@@ -1,5 +1,7 @@
 package com.kyoshisakuda.budget.account.transaction;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.kyoshisakuda.budget.Currency;
 import com.kyoshisakuda.budget.account.AccountTestSample;
 
@@ -28,6 +30,12 @@ public class TransactionTestSample {
 
     public static List<Transaction> getEmptyListOfTransactions() {
         return new ArrayList<Transaction>(0);
+    }
+
+    public static String getSampleTransactionAsJSONString() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+        return writer.writeValueAsString(transaction);
     }
 
 }
