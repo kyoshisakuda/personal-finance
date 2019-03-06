@@ -22,10 +22,15 @@ public class Transaction {
     public Transaction() {}
 
     public Transaction(String description, double amount, Currency currency, int accountId) {
+        this((long) 0, description, amount, currency, Account.createEmptyAccountWithId(accountId));
+    }
+
+    public Transaction(Long id, String description, double amount, Currency currency, Account account) {
+        this.id = id;
         this.description = description;
         this.amount = amount;
         this.currency = currency;
-        this.account = Account.createEmptyAccountWithId(accountId);
+        this.account = account;
     }
 
     public Long getId() {
