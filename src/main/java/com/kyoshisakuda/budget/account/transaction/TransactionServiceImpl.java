@@ -38,6 +38,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     public boolean deleteTransaction(long id) {
+        if (!repository.findById(id).isPresent())
+            return true;
         repository.deleteById(id);
         return (!repository.findById(id).isPresent());
     }

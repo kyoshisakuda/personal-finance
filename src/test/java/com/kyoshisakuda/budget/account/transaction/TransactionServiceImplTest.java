@@ -124,4 +124,11 @@ public class TransactionServiceImplTest {
         when(repository.findById(getSampleTransaction().getId())).thenReturn(Optional.of(getSampleTransaction()));
         assertFalse(service.deleteTransaction(getSampleTransaction().getId()));
     }
+
+    @Test
+    public void deleteTransaction_whenTransactionNotExist_returnTrue() {
+        doNothing().when(repository).deleteById(getSampleTransaction().getId());
+        when(repository.findById(getSampleTransaction().getId())).thenReturn(Optional.empty());
+        assertTrue(service.deleteTransaction(getSampleTransaction().getId()));
+    }
 }
