@@ -33,6 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
     public boolean updateTransaction(long id, Transaction transaction) throws ResponseStatusException {
         if (!repository.findById(id).isPresent())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        transaction.setId(id);
         return Optional.ofNullable(repository.save(transaction)).isPresent();
     }
 

@@ -36,6 +36,7 @@ public class AccountServiceImpl implements AccountService {
     public boolean updateAccount(int id, Account account) throws ResponseStatusException {
         if (!repository.findById(id).isPresent())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        account.setId(id);
         return Optional.ofNullable(repository.save(account)).isPresent();
     }
 
