@@ -42,6 +42,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean deleteAccount(int id) {
+        if (!repository.findById(id).isPresent())
+            return true;
         repository.deleteById(id);
         return !repository.findById(id).isPresent();
     }

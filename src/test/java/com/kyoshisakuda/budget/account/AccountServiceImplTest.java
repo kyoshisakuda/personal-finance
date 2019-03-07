@@ -120,4 +120,11 @@ public class AccountServiceImplTest {
         Mockito.when(repository.findById(getSampleAccount().getId())).thenReturn(Optional.of(getSampleAccount()));
         assertFalse(service.deleteAccount(getSampleAccount().getId()));
     }
+
+    @Test
+    public void deleteAccount_whenNotExist_returnTrue() {
+        Mockito.doNothing().when(repository).deleteById(getSampleAccount().getId());
+        Mockito.when(repository.findById(getSampleAccount().getId())).thenReturn(Optional.empty());
+        assertTrue(service.deleteAccount(getSampleAccount().getId()));
+    }
 }
