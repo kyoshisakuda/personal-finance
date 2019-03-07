@@ -19,6 +19,7 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private Category category;
     private LocalDate date;
+    private boolean debit;
 
     @ManyToOne
     private Account account;
@@ -33,10 +34,19 @@ public class Transaction {
         this((long) 0, description, amount, currency, Account.createEmptyAccountWithId(accountId), category, date);
     }
 
+    public Transaction(String description, double amount, boolean debit, Currency currency, int accountId, Category category, LocalDate date) {
+        this((long) 0, description, amount, debit, currency, Account.createEmptyAccountWithId(accountId), category, date);
+    }
+
     public Transaction(Long id, String description, double amount, Currency currency, Account account, Category category, LocalDate date) {
+        this(id, description, amount, true, currency, account, category, date);
+    }
+
+    public Transaction(Long id, String description, double amount, boolean debit, Currency currency, Account account, Category category, LocalDate date) {
         this.id = id;
         this.description = description;
         this.amount = amount;
+        this.debit = debit;
         this.currency = currency;
         this.account = account;
         this.category = category;
@@ -97,5 +107,13 @@ public class Transaction {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public boolean isDebit() {
+        return debit;
+    }
+
+    public void setDebit(boolean debit) {
+        this.debit = debit;
     }
 }
