@@ -4,6 +4,7 @@ import com.kyoshisakuda.budget.Currency;
 import com.kyoshisakuda.budget.account.Account;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity(name = "transactionK")
 public class Transaction {
@@ -15,22 +16,31 @@ public class Transaction {
     private double amount;
     @Enumerated(EnumType.STRING)
     private Currency currency;
+    @Enumerated(EnumType.STRING)
+    private Category category;
+    private LocalDate date;
 
     @ManyToOne
     private Account account;
 
     public Transaction() {}
 
-    public Transaction(String description, double amount, Currency currency, int accountId) {
-        this((long) 0, description, amount, currency, Account.createEmptyAccountWithId(accountId));
+    public Transaction(String description, double amount, Currency currency, int accountId, LocalDate date) {
+        this(description, amount, currency, accountId, Category.GENERAL, date);
     }
 
-    public Transaction(Long id, String description, double amount, Currency currency, Account account) {
+    public Transaction(String description, double amount, Currency currency, int accountId, Category category, LocalDate date) {
+        this((long) 0, description, amount, currency, Account.createEmptyAccountWithId(accountId), category, date);
+    }
+
+    public Transaction(Long id, String description, double amount, Currency currency, Account account, Category category, LocalDate date) {
         this.id = id;
         this.description = description;
         this.amount = amount;
         this.currency = currency;
         this.account = account;
+        this.category = category;
+        this.date = date;
     }
 
     public Long getId() {
@@ -67,5 +77,21 @@ public class Transaction {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }
