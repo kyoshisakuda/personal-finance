@@ -22,8 +22,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     public List<Transaction> getTransactions(int id) {
         List<Transaction> transactions = new ArrayList<>();
-        repository.findByAccountId(id)
-                .forEach(transactions::add);
+        repository.findByAccountId(id).forEach(transactions::add);
         return transactions;
     }
 
