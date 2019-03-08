@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity(name = "transactionK")
-public class Transaction {
+public class Transaction implements Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -115,5 +115,10 @@ public class Transaction {
 
     public void setDebit(boolean debit) {
         this.debit = debit;
+    }
+
+    @Override
+    public Transaction clone() {
+        return new Transaction(this.id, this.description, this.amount, this.debit, this.currency, this.account, this.category, this.date);
     }
 }

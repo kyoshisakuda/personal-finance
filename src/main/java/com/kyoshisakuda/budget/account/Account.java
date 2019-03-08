@@ -1,6 +1,7 @@
 package com.kyoshisakuda.budget.account;
 
 import com.kyoshisakuda.budget.Currency;
+import com.kyoshisakuda.budget.account.transaction.Transaction;
 
 import javax.persistence.*;
 
@@ -91,5 +92,20 @@ public class Account {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public void rollbackTransaction(Transaction transaction) {
+        updateBalance(transaction.getAmount(), !transaction.isDebit());
+    }
+
+    public void updateBalance(Transaction transaction) {
+        updateBalance(transaction.getAmount(), transaction.isDebit());
+    }
+
+    public void updateBalance(double amount, boolean debit) {
+        if (debit)
+            this.balance -= amount;
+        else
+            this.balance += amount;
     }
 }
