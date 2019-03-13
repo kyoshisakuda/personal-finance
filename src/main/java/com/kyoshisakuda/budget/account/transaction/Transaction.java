@@ -6,7 +6,7 @@ import com.kyoshisakuda.budget.account.Account;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity(name = "money_transaction")
+@Entity(name = "transaction")
 public class Transaction implements Cloneable {
 
     @Id
