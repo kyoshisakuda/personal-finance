@@ -1,5 +1,6 @@
 package com.kyoshisakuda.budget.account.transaction;
 
+import com.kyoshisakuda.budget.account.AccountRepository;
 import org.hamcrest.CoreMatchers;
 import org.junit.Rule;
 import org.junit.Test;
@@ -36,6 +37,9 @@ public class TransactionServiceImplTest {
 
     @MockBean
     private TransactionRepository repository;
+
+    @MockBean
+    private AccountRepository accountRepository;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -78,6 +82,8 @@ public class TransactionServiceImplTest {
     @Test
     public void addTransaction_returnTrue() {
         when(repository.save(getSampleTransaction())).thenReturn(getSampleTransaction());
+        when(accountRepository.findById(anyInt())).thenReturn(Optional.of(getSampleAccount()));
+        when(accountRepository.save(getSampleAccount())).thenReturn(getSampleAccount());
         assertTrue(service.addTransaction(getSampleTransaction()));
     }
 
@@ -91,6 +97,8 @@ public class TransactionServiceImplTest {
     public void updateTransaction_returnTrue() {
         when(repository.findById(getSampleTransaction().getId())).thenReturn(Optional.of(getSampleTransaction()));
         when(repository.save(getSampleTransaction())).thenReturn(getSampleTransaction());
+        when(accountRepository.findById(anyInt())).thenReturn(Optional.of(getSampleAccount()));
+        when(accountRepository.save(getSampleAccount())).thenReturn(getSampleAccount());
         assertTrue(service.updateTransaction(getSampleTransaction().getId(), getSampleTransaction()));
     }
 
