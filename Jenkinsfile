@@ -1,7 +1,7 @@
 node {
     def mvnHome
     stage('Preparation') {
-        slackSend color: '#439FE0', message: 'Build started: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)'
+        slackSend color: '#439FE0', message: "Build started: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
         git url: 'https://github.com/kyoshisakuda/personal-finance.git', branch: 'development'
         mvnHome = tool 'localMaven'
     }
