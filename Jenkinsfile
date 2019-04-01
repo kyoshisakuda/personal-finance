@@ -1,10 +1,8 @@
 node {
     def mvnHome
     stage('Preparation') {
+        slackSend color: '#439FE0', message: 'Build started: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)'
         git url: 'https://github.com/kyoshisakuda/personal-finance.git', branch: 'development'
-        // Get the Maven tool.
-        // ** NOTE: This 'M3' Maven tool must be configured
-        // **       in the global configuration.
         mvnHome = tool 'localMaven'
     }
     stage('Build') {
